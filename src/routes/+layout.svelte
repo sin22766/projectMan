@@ -1,5 +1,9 @@
-<script>
-	import '../app.css';
+<script lang="ts">
+	import '../app.pcss';
+    import Navbar from "$lib/components/Navbar/Navbar.svelte";
 </script>
 
-<slot />
+<div class="flex flex-col w-screen min-h-screen">
+    <Navbar/>
+    <slot />
+</div>
