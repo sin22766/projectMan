@@ -1,3 +1,3 @@
 <svelte:head>
-	<title>Login</title>
+	<title>Board</title>
 </svelte:head>

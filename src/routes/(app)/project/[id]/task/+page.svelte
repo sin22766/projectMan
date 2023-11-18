@@ -1,3 +1,3 @@
 <svelte:head>
-	<title>Register</title>
+	<title>Task</title>
 </svelte:head>
