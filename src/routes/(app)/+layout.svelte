@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import Logo from '$lib/components/icons/Logo.svelte';
 
 	import { page } from '$app/stores';
@@ -14,33 +14,47 @@
 		}
 	];
 
-	const user: undefined | string = undefined;
+	export let data;
+
+	const getFirstLetters = (str: string) => {
+		return str
+			.split(' ')
+			.map((word) => word.charAt(0))
+			.join('');
+	};
 </script>
 
-
-<div class='flex flex-col w-screen h-screen'>
-	<div class='flex px-4 py-2 justify-between font-light text-xl'>
-		<div class='w-full flex items-center'>
-			<a href='/'>
+<div class="flex h-screen w-screen flex-col">
+	<div class="flex justify-between px-4 py-2 text-xl font-light">
+		<div class="flex w-full items-center">
+			<a href="/">
 				<Logo />
 			</a>
 		</div>
-		{#if user}
-			<div class='w-full flex justify-center gap-9'>
+		{#if data.session}
+			<div class="flex w-full justify-center gap-9">
 				{#each pathList as path}
-					<a href={path.path} class={$page.url.pathname.startsWith(path.path) ? 'font-medium': ''}>{path.label}</a>
+					<a href={path.path} class={$page.url.pathname.startsWith(path.path) ? 'font-medium' : ''}
+						>{path.label}</a
+					>
 				{/each}
 			</div>
 		{/if}
-		<div class='w-full flex justify-end gap-2'>
-			{#if user}
-				<div class='h-10 w-10 rounded-full bg-amber-600 flex justify-center items-center text-amber-50'>
-					PC
-				</div>
+		<div class="flex w-full justify-end gap-2">
+			{#if data.session}
+				<button
+					class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-600 text-amber-50"
+				>
+					{getFirstLetters(data.session.user.user_metadata.name)}
+				</button>
 			{:else}
-				<a href='/user/login' class='text-xl font-bold'>Login</a>
-				<a href='/user/register' class='text-xl font-bold text-amber-50 bg-amber-600 rounded-md px-4 py-0.5'>Get Start
-					!</a>
+				<a href="/auth/login" class="text-xl font-bold">Login</a>
+				<a
+					href="/auth/register"
+					class="rounded-md bg-amber-600 px-4 py-0.5 text-xl font-bold text-amber-50"
+				>
+					Get Start !
+				</a>
 			{/if}
 		</div>
 	</div>

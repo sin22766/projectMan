@@ -1,0 +1,14 @@
+// src/routes/+page.server.ts
+import { redirect } from '@sveltejs/kit';
+
+import type { LayoutServerLoad } from './$types';
+
+export const load: LayoutServerLoad = async ({ url, locals: { getSession } }) => {
+	const session = await getSession();
+
+	if (session) {
+		throw redirect(303, '/project');
+	}
+
+	return { url: url.origin };
+};
