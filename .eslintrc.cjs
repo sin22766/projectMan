@@ -58,12 +58,15 @@ module.exports = {
 	settings: {
 		'import/parsers': {
 			'@typescript-eslint/parser': ['.ts', '.tsx'],
-			'svelte-eslint-parser': ['*.svelte']
+			'svelte-eslint-parser': ['.svelte']
 		},
 		'import/resolver': {
 			typescript: {
 				alwaysTryTypes: true
 			}
+		},
+		tailwindcss: {
+			callees: ['twMerge', 'twJoin']
 		}
 	}
 };
