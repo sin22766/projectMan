@@ -1,50 +1,54 @@
-import { error, redirect } from '@sveltejs/kit';
+import {error, redirect} from '@sveltejs/kit';
 
-import type { LayoutServerLoad } from './$types';
+import type {Tables, Views} from "$lib/server/schema";
 
-export const load: LayoutServerLoad = async ({ locals: { supabase, getSession }, params }) => {
-	const session = await getSession();
+import type {LayoutServerLoad} from './$types';
 
-	if (!session) {
-		throw redirect(303, '/auth/login');
-	}
+export const load: LayoutServerLoad = async ({locals: {supabase, getSession}, params}) => {
+    const session = await getSession();
 
-	const id = params.id;
+    if (!session) {
+        throw redirect(303, '/auth/login');
+    }
 
-	const {
-		data: project,
-		error: projectError,
-		status: projectStatus
-	} = await supabase
-		.from('project_detail')
-		.select('id, name, description, last_updated')
-		.eq('owner_id', session.user.id)
-		.eq('id', id)
-		.maybeSingle();
+    const id = params.id;
 
-	if (projectError) {
-		throw error(projectStatus, projectError.message);
-	}
+    const {
+        data: project,
+        error: projectError,
+        status: projectStatus
+    } = await supabase
+        .from('project_detail')
+        .select('id, name, description, last_updated')
+        .eq('owner_id', session.user.id)
+        .eq('id', id)
+        .maybeSingle<Omit<Views<'project_detail'>, 'created_at' | 'owner_id'>>()
 
-	if (!project) {
-		throw error(404, 'Project not found');
-	}
 
-	const {
-		data: task,
-		error: taskError,
-		status: taskStatus
-	} = await supabase
-		.from('task')
-		.select('id, summary, description, status, due_at, project_id')
-		.eq('project_id', id);
+    if (projectError) {
+        throw error(projectStatus, projectError.message);
+    }
 
-	if (taskError) {
-		throw error(taskStatus, taskError.message);
-	}
+    if (!project) {
+        throw error(404, 'Project not found');
+    }
 
-	return {
-		project: project,
-		tasks: task
-	};
+    const {
+        data: task,
+        error: taskError,
+        status: taskStatus
+    } = await supabase
+        .from('task')
+        .select('id, summary, description, status, due_at, project_id')
+        .eq('project_id', id)
+        .returns<Omit<Tables<"task">, "created_at">[]>()
+
+    if (taskError) {
+        throw error(taskStatus, taskError.message);
+    }
+
+    return {
+        project: project,
+        tasks: task
+    };
 };

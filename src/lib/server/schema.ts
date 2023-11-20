@@ -1,5 +1,9 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
+export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
+export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row']
+
 export interface Database {
 	public: {
 		Tables: {
@@ -113,12 +117,12 @@ export interface Database {
 		Views: {
 			project_detail: {
 				Row: {
-					created_at: string | null;
+					created_at: string;
 					description: string | null;
-					id: string | null;
+					id: string;
 					last_updated: string | null;
-					name: string | null;
-					owner_id: string | null;
+					name: string;
+					owner_id: string;
 				};
 				Relationships: [
 					{

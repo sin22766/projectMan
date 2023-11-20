@@ -18,8 +18,8 @@
 		})
 		.sort((a, b) => {
 			if ($sortBy === 'last_updated') {
-				const aTime = new Date(a.last_updated);
-				const bTime = new Date(b.last_updated);
+				const aTime = new Date(a.last_updated ?? "");
+				const bTime = new Date(b.last_updated ?? "");
 				return bTime.getTime() - aTime.getTime();
 			}
 			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
