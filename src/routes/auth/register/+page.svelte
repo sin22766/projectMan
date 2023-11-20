@@ -33,8 +33,10 @@
 			/>
 		</label>
 	</form>
-	<button form="login" class="rounded-md bg-amber-600 p-2 font-bold text-amber-50"
-		>Create Account</button
-	>
-	<p>Already have an account? <a class="font-bold text-yellow-800" href="/user/login">Login</a></p>
+	<button form="login" class="rounded-md bg-amber-600 p-2 font-bold text-amber-50">
+		Create Account
+	</button>
+	<p>
+		Already have an account? <a class="font-bold text-yellow-800" href="/user/login">Login</a>
+	</p>
 </div>

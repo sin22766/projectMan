@@ -1,10 +1,14 @@
+<script lang="ts">
+	import { enhance } from '$app/forms';
+</script>
+
 <svelte:head>
 	<title>Login</title>
 </svelte:head>
 
 <div class="flex w-full flex-col gap-4 p-2">
 	<h1 class="text-2xl font-bold text-amber-800">Log in</h1>
-	<form id="login" class="flex flex-col gap-2" method="post">
+	<form id="login" class="flex flex-col gap-2" method="post" use:enhance>
 		<label class="flex flex-col gap-1">
 			<span class="font-bold text-amber-600">Email*</span>
 			<input
@@ -25,5 +29,7 @@
 		</label>
 	</form>
 	<button form="login" class="bg-amber-600 p-2 font-bold text-amber-50">Log in</button>
-	<p>Don’t have an account? <a href="/user/register">Register</a></p>
+	<p>
+		Don’t have an account? <a href="/user/register">Register</a>
+	</p>
 </div>

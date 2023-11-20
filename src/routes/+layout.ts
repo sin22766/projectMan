@@ -1,6 +1,6 @@
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit';
 
-import type { Database } from '$lib/server/schema'
+import type { Database } from '$lib/server/schema';
 
 import type { LayoutLoad } from './$types';
 
