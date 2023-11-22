@@ -16,7 +16,8 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession } })
 	} = await supabase
 		.from('project_detail')
 		.select('id, name, description, last_updated')
-		.eq('owner_id', session.user.id);
+		.eq('owner_id', session.user.id)
+
 
 	if (err) {
 		throw error(status, err.message);

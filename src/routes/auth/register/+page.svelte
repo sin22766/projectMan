@@ -1,3 +1,9 @@
+<script lang="ts">
+	import type { ActionData } from './$types';
+
+	export let form: ActionData;
+</script>
+
 <svelte:head>
 	<title>Register - Try NimbleSquad</title>
 </svelte:head>
@@ -31,12 +37,15 @@
 				type="password"
 				required
 			/>
+			{#if form?.error}
+				<span class="text-sm text-red-700">{form.error}</span>
+			{/if}
 		</label>
 	</form>
 	<button form="login" class="rounded-md bg-amber-600 p-2 font-bold text-amber-50">
 		Create Account
 	</button>
-	<p>
-		Already have an account? <a class="font-bold text-yellow-800" href="/user/login">Login</a>
+	<p class="text-sm font-light">
+		Already have an account? <a class="font-bold text-yellow-800" href="/auth/login">Login</a>
 	</p>
 </div>

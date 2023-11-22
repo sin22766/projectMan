@@ -6,12 +6,12 @@ export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await request.formData();
 
-		const email = form.get('email');
-		const password = form.get('password');
+		const email = form.get('email') as string;
+		const password = form.get('password') as string;
 
 		const { error } = await locals.supabase.auth.signInWithPassword({
-			email: email as string,
-			password: password as string
+			email: email,
+			password: password
 		});
 
 		if (error) {

@@ -5,9 +5,54 @@
 	import Icon from '@iconify/svelte';
 	import { writable } from 'svelte/store';
 
-	import SortDropdown from '$lib/components/interacts/Dropdowns/SortDropdown.svelte';
+	import Dropdown from '$lib/components/Dropdowns/DropdownParams.svelte';
+	import { getRelativeTimeString } from '$lib/utils/dateFormat';
 
-	let sortBy = writable('name');
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+
+	const sortBy = writable($page.url.searchParams.get('sort') ?? 'number');
+	let searchBy = $page.url.searchParams.get('search') ?? '';
+
+	let sortConditions = [
+		{
+			title: 'By Task Number',
+			value: 'number'
+		},
+		{
+			title: 'By Summary',
+			value: 'summary'
+		},
+		{
+			title: 'By Due Date',
+			value: 'due_at'
+		}
+	];
+
+	$: tasks = data.tasks
+		.filter((item) => {
+			return item.summary.toLowerCase().includes(searchBy.toLowerCase());
+		})
+		.sort((a, b) => {
+			if ($sortBy === 'due_at') {
+				const aTime = new Date(a.due_at ?? '');
+				const bTime = new Date(b.due_at ?? '');
+				return bTime.getTime() - aTime.getTime();
+			} else if ($sortBy === 'number') {
+				return a.id - b.id;
+			}
+			return a.summary.toLowerCase().localeCompare(b.summary.toLowerCase());
+		});
+
+	const handleSearch = async () => {
+		const urlParams = $page.url.searchParams;
+		if (searchBy.length) {
+			urlParams.set('search', searchBy);
+		} else {
+			urlParams.delete('search');
+		}
+		await goto(`?${urlParams.toString()}`, { replaceState: true });
+	};
 
 	export let data;
 </script>
@@ -25,9 +70,11 @@
 			required
 			placeholder="Find a task..."
 			autocomplete="off"
+			bind:value={searchBy}
+			on:change={handleSearch}
 		/>
 		<div class="flex gap-2">
-			<SortDropdown valueStore={sortBy} />
+			<Dropdown list={sortConditions} valueStore={sortBy} params="sort" />
 		</div>
 		<button
 			type="button"
@@ -38,13 +85,20 @@
 		</button>
 	</div>
 	<div class="flex flex-col divide-y divide-amber-700 rounded-md border border-amber-700">
-		{#each data.tasks as task}
+		{#each tasks as task}
 			<div class="flex min-h-[48px] justify-between px-2 py-1.5">
 				<div class="flex items-center gap-2 text-xl">
 					<span class="font-light text-yellow-500">#{task.id}</span>
 					<span class="font-medium">{task.summary}</span>
 				</div>
 				<div class="flex items-center gap-2">
+					<span class="text-sm font-light">
+						{#if task.due_at}
+							{getRelativeTimeString(new Date(task.due_at))}
+						{:else}
+							No due date
+						{/if}
+					</span>
 					<button
 						class="flex gap-0.5 rounded-md border border-amber-700 px-1.5 py-0.5 text-sm font-medium"
 					>
@@ -59,7 +113,9 @@
 				</div>
 			</div>
 		{:else}
-			<p>No project</p>
+			<div class="flex items-center h-12 px-2 py-1.5">
+				<p>No task</p>
+			</div>
 		{/each}
 	</div>
 </div>

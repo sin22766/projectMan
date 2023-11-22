@@ -3,7 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { writable } from 'svelte/store';
 
-	import SortDropdown from '$lib/components/interacts/Dropdowns/SortDropdown.svelte';
+	import Dropdown from '$lib/components/Dropdowns/DropdownParams.svelte';
 	import { getRelativeTimeString } from '$lib/utils/dateFormat';
 
 	import { goto } from '$app/navigation';
@@ -12,14 +12,25 @@
 	const sortBy = writable($page.url.searchParams.get('sort') ?? 'name');
 	let searchBy = $page.url.searchParams.get('search') ?? '';
 
+	let sortConditions = [
+		{
+			title: 'By Name',
+			value: 'name'
+		},
+		{
+			title: 'By Last Updated',
+			value: 'last_updated'
+		}
+	];
+
 	$: projects = data.projects
 		.filter((item) => {
 			return item.name.toLowerCase().includes(searchBy.toLowerCase());
 		})
 		.sort((a, b) => {
 			if ($sortBy === 'last_updated') {
-				const aTime = new Date(a.last_updated);
-				const bTime = new Date(b.last_updated);
+				const aTime = new Date(a.last_updated ?? '');
+				const bTime = new Date(b.last_updated ?? '');
 				return bTime.getTime() - aTime.getTime();
 			}
 			return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -42,7 +53,7 @@
 	<title>Project</title>
 </svelte:head>
 
-<div class="flex flex-col gap-2 px-8 py-2 md:px-16 lg:px-24">
+<div class="flex flex-col gap-2 px-8 py-8 md:px-16 lg:px-64">
 	<h1 class="text-2xl font-bold">Your Project</h1>
 	<div class="flex flex-wrap gap-4 py-2">
 		<input
@@ -56,15 +67,15 @@
 			on:change={handleSearch}
 		/>
 		<div class="flex gap-2">
-			<SortDropdown valueStore={sortBy} />
+			<Dropdown list={sortConditions} valueStore={sortBy} params="sort" />
 		</div>
-		<button
-			type="button"
+		<a
+			href="/project/create"
 			class="flex items-center justify-center gap-2 rounded-md bg-amber-300 px-4 py-0.5"
 		>
 			<span class="text-xl font-bold">New</span>
 			<Icon icon={documentPlus} width="24" height="24" />
-		</button>
+		</a>
 	</div>
 	<div class="flex flex-col divide-y divide-amber-700 border-y border-amber-700">
 		{#each projects as project}
