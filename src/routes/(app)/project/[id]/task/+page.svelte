@@ -6,10 +6,15 @@
 	import { writable } from 'svelte/store';
 
 	import SortDropdown from '$lib/components/interacts/Dropdowns/SortDropdown.svelte';
+	import TaskModal from '$lib/components/taskModal/TaskModal.svelte'
 
 	let sortBy = writable('name');
 
 	export let data;
+
+	let taskModal: TaskModal
+
+
 </script>
 
 <svelte:head>
@@ -17,6 +22,7 @@
 </svelte:head>
 
 <div class="flex w-full flex-col gap-2 px-8 py-2 md:px-16 lg:px-24">
+	<TaskModal bind:this={taskModal}></TaskModal>
 	<div class="flex flex-wrap gap-4 py-2">
 		<input
 			class="h-8 grow rounded-md border border-amber-600 bg-amber-100 p-1 placeholder-amber-600 outline-amber-800"
@@ -53,6 +59,7 @@
 					</button>
 					<button
 						class="flex h-9 w-9 items-center justify-center rounded-md bg-amber-200 font-medium"
+						on:click={()=>{taskModal.showModal(task); console.log(data.tasks)}}
 					>
 						<Icon icon={ellipsisHorizontal} width="24" height="24" />
 					</button>
