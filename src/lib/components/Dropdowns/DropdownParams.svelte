@@ -42,7 +42,7 @@
 <button
 	type="button"
 	use:melt={$trigger}
-	class="flex items-center justify-center gap-2 rounded-md bg-amber-700 px-4 py-0.5 text-yellow-50"
+	class="flex items-center justify-center gap-2 rounded-md bg-amber-700 px-4 py-0.5 text-amber-50"
 >
 	<span class="text-xl font-medium">Sort</span>
 	<span class={twJoin('rotate-0 transition-transform', $open ? 'rotate-180' : '')}>

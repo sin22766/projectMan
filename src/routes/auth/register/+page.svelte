@@ -46,6 +46,6 @@
 		Create Account
 	</button>
 	<p class="text-sm font-light">
-		Already have an account? <a class="font-bold text-yellow-800" href="/auth/login">Login</a>
+		Already have an account? <a class="font-bold text-amber-800" href="/auth/login">Login</a>
 	</p>
 </div>

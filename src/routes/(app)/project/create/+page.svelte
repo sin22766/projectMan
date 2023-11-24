@@ -11,7 +11,7 @@
 
 <div class="flex flex-col gap-2 px-64 py-8">
 	<h1 class="text-2xl font-bold">Create project</h1>
-	<hr class="border-yellow-700" />
+	<hr class="border-amber-700" />
 	<p class="text-sm">Required fields are marked with an asterisk (*).</p>
 	<form class="flex flex-col gap-2" method="post" use:enhance>
 		<label class="flex flex-col gap-1">

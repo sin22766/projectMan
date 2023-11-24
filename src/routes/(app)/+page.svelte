@@ -9,7 +9,7 @@
 	</h1>
 	<p class="text-center text-lg text-amber-600">The #1 Project management tool used by Bob.</p>
 	<a
-		class="w-fit rounded-md bg-amber-600 px-7 py-3 text-xl font-bold text-yellow-50"
+		class="w-fit rounded-md bg-amber-600 px-7 py-3 text-xl font-bold text-amber-50"
 		href="/project"
 	>
 		Get Start !
