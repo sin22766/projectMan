@@ -88,7 +88,7 @@
 		{#each tasks as task}
 			<div class="flex min-h-[48px] justify-between px-2 py-1.5">
 				<div class="flex items-center gap-2 text-xl">
-					<span class="font-light text-yellow-500">#{task.id}</span>
+					<span class="min-w-[36px] font-light text-yellow-500">#{task.id}</span>
 					<span class="font-medium">{task.summary}</span>
 				</div>
 				<div class="flex items-center gap-2">

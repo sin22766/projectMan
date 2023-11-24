@@ -6,7 +6,7 @@
 	import { fly } from 'svelte/transition';
 	import { twJoin } from 'tailwind-merge';
 
-	export let label: string = "Dropdown";
+	export let label: string = 'Dropdown';
 	export let list: { title: string; value: string }[] = [];
 	export let value: string | undefined;
 

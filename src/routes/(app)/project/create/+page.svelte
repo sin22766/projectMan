@@ -24,7 +24,8 @@
 				{...$constraints.name}
 			/>
 			<span class="text-sm">
-				The project name can only contain the alphabets, digits, and <code>- _</code> symbols.
+				The project name can only contain the alphabets, digits, and <code>- _</code>
+				symbols.
 			</span>
 		</label>
 		<label class="flex flex-col gap-1">
