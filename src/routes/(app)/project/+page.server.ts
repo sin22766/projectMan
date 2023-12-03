@@ -1,5 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 
+import type {  Views } from '$lib/server/schema';
+
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase, getSession } }) => {
@@ -16,7 +18,8 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession } })
 	} = await supabase
 		.from('project_detail')
 		.select('id, name, description, last_updated')
-		.eq('owner_id', session.user.id);
+		.eq('owner_id', session.user.id)
+		.returns<Omit<Views<'project_detail'>, 'created_at' | 'owner_id'>[]>();
 
 	if (err) {
 		throw error(status, err.message);
