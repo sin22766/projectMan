@@ -1,12 +1,16 @@
 <script lang="ts">
-	import UserDropdown from '$lib/components/Dropdowns/UserDropdown.svelte';
-	import Logo from '$lib/components/Icons/Logo.svelte';
+	import { melt } from '@melt-ui/svelte';
+	import { twJoin } from 'tailwind-merge';
+
+	import { Dropdown, Logo } from '$lib/components/UI';
+
+	export let data;
 
 	import { page } from '$app/stores';
 
 	const pathList = [
 		{
-			label: 'Project',
+			label: 'Projects',
 			path: '/project'
 		},
 		{
@@ -15,7 +19,12 @@
 		}
 	];
 
-	export let data;
+	const getFirstLetters = (str: string) => {
+		return str
+			.split(' ')
+			.map((word) => word.charAt(0))
+			.join('');
+	};
 </script>
 
 <div class="flex h-screen w-screen flex-col">
@@ -36,7 +45,25 @@
 		{/if}
 		<div class="flex w-full justify-end gap-2">
 			{#if data.session}
-				<UserDropdown name={data.session.user.user_metadata.name} />
+				<Dropdown>
+					<svelte:fragment slot="trigger" let:trigger>
+						<button
+							type="button"
+							use:melt={trigger}
+							class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-600 text-amber-50"
+						>
+							{getFirstLetters(data.session.user.user_metadata.name)}
+						</button>
+					</svelte:fragment>
+					<svelte:fragment slot="items" let:item let:itemStyles>
+						<a href="/user/task" class={itemStyles} use:melt={item}>Your task</a>
+						<form method="post" action="/auth/logout">
+							<button type="submit" class={twJoin(itemStyles, 'w-full')} use:melt={item}>
+								Log out
+							</button>
+						</form>
+					</svelte:fragment>
+				</Dropdown>
 			{:else}
 				<a href="/auth/login" class="text-xl font-bold">Login</a>
 				<a

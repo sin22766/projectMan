@@ -1,24 +1,25 @@
 <script lang="ts">
 	import documentPlus from '@iconify/icons-heroicons/document-plus';
 	import Icon from '@iconify/svelte';
-	import { writable } from 'svelte/store';
 
-	import Dropdown from '$lib/components/Dropdowns/DropdownParams.svelte';
-	import { getRelativeTimeString } from '$lib/utils/dateFormat';
+	import { DropdownSelect } from '$lib/components/UI';
+	import { getRelativeTimeString } from '$lib/utils/date';
 
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	const sortBy = writable($page.url.searchParams.get('sort') ?? 'name');
+	export let data;
+
+	let sortBy = $page.url.searchParams.get('sort') ?? 'name';
 	let searchBy = $page.url.searchParams.get('search') ?? '';
 
-	let sortConditions = [
+	let sortOptions = [
 		{
-			title: 'By Name',
+			label: 'By Name',
 			value: 'name'
 		},
 		{
-			title: 'By Last Updated',
+			label: 'By Last Updated',
 			value: 'last_updated'
 		}
 	];
@@ -28,7 +29,7 @@
 			return item.name.toLowerCase().includes(searchBy.toLowerCase());
 		})
 		.sort((a, b) => {
-			if ($sortBy === 'last_updated') {
+			if (sortBy === 'last_updated') {
 				const aTime = new Date(a.last_updated ?? '');
 				const bTime = new Date(b.last_updated ?? '');
 				return bTime.getTime() - aTime.getTime();
@@ -46,7 +47,15 @@
 		await goto(`?${urlParams.toString()}`, { replaceState: true });
 	};
 
-	export let data;
+	const changeSortHandler = async (event: CustomEvent) => {
+		if (!event.detail.value) return;
+
+		sortBy = event.detail.value;
+
+		const urlParams = $page.url.searchParams;
+		urlParams.set('sort', sortBy);
+		await goto(`?${urlParams.toString()}`, { replaceState: true });
+	};
 </script>
 
 <svelte:head>
@@ -67,7 +76,13 @@
 			on:change={handleSearch}
 		/>
 		<div class="flex gap-2">
-			<Dropdown list={sortConditions} valueStore={sortBy} params="sort" />
+			<DropdownSelect
+				options={sortOptions}
+				defaultOption={sortOptions.find((i) => i.value === sortBy)}
+				on:change={changeSortHandler}
+			>
+				Sort
+			</DropdownSelect>
 		</div>
 		<a
 			href="/project/create"

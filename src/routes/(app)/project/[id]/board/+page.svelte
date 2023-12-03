@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms/client';
+	import { error } from '@sveltejs/kit';
 
 	import type { Enums } from '$lib/server/schema';
 
+	import { invalidate } from '$app/navigation';
+
 	export let data;
 
-	let formEl: HTMLFormElement;
-
-	const { form, enhance } = superForm(data.form);
+	type Task = (typeof data.tasks)[0];
 
 	const task_status: { label: string; status: Enums<'task_status'> }[] = [
 		{ label: 'To Do', status: 'todo' },
@@ -15,20 +15,20 @@
 		{ label: 'Done', status: 'done' }
 	];
 
-	const handleDragStart = (e: DragEvent, id: number, status: Enums<'task_status'>) => {
+	const dragStartHandler = (e: DragEvent, task: Task) => {
 		if (!e.dataTransfer) {
 			return;
 		}
 		e.dataTransfer.effectAllowed = 'move';
-		e.dataTransfer.setData('text/plain', JSON.stringify({ id: id, status: status }));
+		e.dataTransfer.setData('text/plain', JSON.stringify(task));
 	};
 
-	const handleDragOver = (e: DragEvent) => {
+	const dragOverHandler = (e: DragEvent) => {
 		e.stopPropagation();
 		e.preventDefault();
 	};
 
-	const handleDrop = async (e: DragEvent, targetStatus: Enums<'task_status'>) => {
+	const dropHandler = async (e: DragEvent, targetStatus: Enums<'task_status'>) => {
 		e.stopPropagation();
 		e.preventDefault();
 
@@ -37,15 +37,29 @@
 			return;
 		}
 
-		const task = JSON.parse(rawData) as { id: number; status: Enums<'task_status'> };
+		const task = JSON.parse(rawData) satisfies Task as Task;
 
 		if (task.status === targetStatus) {
 			return;
 		}
 
-		$form.id = task.id;
-		$form.status = targetStatus;
-		setTimeout(() => formEl.requestSubmit(), 50);
+		const response = await fetch('/api/task', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				project_id: task.project_id,
+				id: task.id,
+				status: targetStatus
+			})
+		});
+
+		const data = await response.json();
+
+		if (data.error) {
+			alert(JSON.stringify(error));
+		}
+
+		await invalidate(`tasks:${task.project_id}`);
 	};
 </script>
 
@@ -53,12 +67,12 @@
 	<title>Board</title>
 </svelte:head>
 
-<div class="flex h-fit flex-col flex-wrap gap-8 p-8 lg:flex-row">
+<div class="flex h-fit flex-col flex-wrap gap-8 px-8 py-2 md:px-16 lg:px-24 lg:flex-row">
 	{#each task_status as status}
 		<div
 			id={status.status}
-			on:dragover={handleDragOver}
-			on:drop={(event) => handleDrop(event, status.status)}
+			on:dragover={dragOverHandler}
+			on:drop={(event) => dropHandler(event, status.status)}
 			class="flex min-w-[256px] flex-col gap-2.5 rounded-md bg-amber-100 p-2"
 			role="group"
 		>
@@ -68,7 +82,7 @@
 			</div>
 			{#each data.tasks.filter((i) => i.status === status.status) as task}
 				<div
-					on:dragstart={(e) => handleDragStart(e, task.id, task.status)}
+					on:dragstart={(e) => dragStartHandler(e, task)}
 					role="button"
 					tabindex="0"
 					draggable="true"
@@ -82,8 +96,4 @@
 			{/each}
 		</div>
 	{/each}
-	<form bind:this={formEl} class="hidden" method="post" use:enhance>
-		<input name="id" type="hidden" bind:value={$form.id} />
-		<input name="status" type="hidden" bind:value={$form.status} />
-	</form>
 </div>

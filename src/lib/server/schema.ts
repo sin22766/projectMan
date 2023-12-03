@@ -56,7 +56,7 @@ export interface Database {
 					created_at?: string;
 					description?: string | null;
 					due_at?: string | null;
-					id: number;
+					id?: number;
 					project_id: string;
 					status?: Database['public']['Enums']['task_status'];
 					summary: string;

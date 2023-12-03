@@ -2,7 +2,7 @@ import { error, redirect } from '@sveltejs/kit';
 
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals: { supabase, getSession }, params }) => {
+export const load: LayoutServerLoad = async ({ locals: { supabase, getSession }, params , depends}) => {
 	const session = await getSession();
 
 	if (!session) {
@@ -10,6 +10,8 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, getSession },
 	}
 
 	const id = params.id;
+
+	depends(`tasks:${id}`);
 
 	const {
 		data: project,
@@ -27,7 +29,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, getSession },
 	}
 
 	if (!project) {
-		throw error(404, 'Project not found');
+		throw error(404, 'Projects not found');
 	}
 
 	const {
