@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Logo from '$lib/components/icons/Logo.svelte';
-	import UserDropdown from '$lib/components/interacts/Dropdowns/UserDropdown.svelte';
+	import UserDropdown from '$lib/components/Dropdowns/UserDropdown.svelte';
+	import Logo from '$lib/components/Icons/Logo.svelte';
 
 	import { page } from '$app/stores';
 

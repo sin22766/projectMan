@@ -2,14 +2,17 @@
 	import chevronDown from '@iconify/icons-heroicons/chevron-down';
 	import Icon from '@iconify/svelte';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import type { Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import { twJoin } from 'tailwind-merge';
 
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	export let label: string = 'Dropdown';
+	export let list: { title: string; value: string }[] = [];
+	export let value: string | undefined;
 
-	export let valueStore: Writable<string>;
+	let valueStore = writable<string>();
+
+	$: value = $valueStore;
 
 	const {
 		elements: { trigger, menu, arrow },
@@ -27,31 +30,14 @@
 		defaultValue: 'By Name',
 		value: valueStore
 	});
-
-	let sortConditions = [
-		{
-			title: 'By Name',
-			value: 'name'
-		},
-		{
-			title: 'By Last Updated',
-			value: 'last_updated'
-		}
-	];
-
-	let changeSortParams = async (sortBy: string) => {
-		const urlParams = $page.url.searchParams;
-		urlParams.set('sort', sortBy);
-		await goto(`?${urlParams.toString()}`);
-	};
 </script>
 
 <button
 	type="button"
 	use:melt={$trigger}
-	class="flex items-center justify-center gap-2 rounded-md bg-amber-700 px-4 py-0.5 text-yellow-50"
+	class="flex items-center justify-center gap-2 rounded-md bg-amber-700 px-4 py-0.5 text-amber-50"
 >
-	<span class="text-xl font-medium">Sort</span>
+	<span class="text-xl font-medium">{label}</span>
 	<span class={twJoin('rotate-0 transition-transform', $open ? 'rotate-180' : '')}>
 		<Icon icon={chevronDown} width="24" height="24" />
 	</span>
@@ -60,18 +46,15 @@
 {#if $open}
 	<div class="menu" use:melt={$menu} transition:fly={{ duration: 150, y: -10 }}>
 		<div use:melt={$radioGroup}>
-			{#each sortConditions as sortBy}
-				<div
-					class="item"
-					use:melt={$radioItem({ value: sortBy.value })}
-					on:m-click={() => changeSortParams(sortBy.value)}
-				>
+			{#each list as listItem}
+				<!--suppress JSCheckFunctionSignatures -->
+				<div class="item" use:melt={$radioItem({ value: listItem.value })}>
 					<div class="check">
-						{#if $isChecked(sortBy.value)}
+						{#if $isChecked(listItem.value)}
 							<div class="dot" />
 						{/if}
 					</div>
-					{sortBy.title}
+					{listItem.title}
 				</div>
 			{/each}
 		</div>

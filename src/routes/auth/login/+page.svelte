@@ -31,7 +31,7 @@
 				required
 			/>
 			{#if form?.error}
-				<span class="text-red-700 text-sm">{form.error}</span>
+				<span class="text-sm text-red-700">{form.error}</span>
 			{/if}
 		</label>
 	</form>
