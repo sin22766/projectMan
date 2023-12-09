@@ -1,7 +1,6 @@
 <script lang="ts">
-	import chevronDown from '@iconify/icons-heroicons/chevron-down';
-	import Icon from '@iconify/svelte';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
+	import { ChevronDown } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
 	import { twJoin, twMerge } from 'tailwind-merge';
 
@@ -32,7 +31,7 @@
 			<slot>Dropdown</slot>
 		</span>
 		<span class={twJoin('transition-transform', $open ? 'rotate-180' : 'rotate-0')}>
-			<Icon icon={chevronDown} width="24" height="24" />
+			<ChevronDown class="h-6 w-6" />
 		</span>
 	</button>
 </slot>

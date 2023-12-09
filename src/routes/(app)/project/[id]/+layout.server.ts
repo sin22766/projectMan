@@ -2,7 +2,11 @@ import { error, redirect } from '@sveltejs/kit';
 
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ locals: { supabase, getSession }, params , depends}) => {
+export const load: LayoutServerLoad = async ({
+	locals: { supabase, getSession },
+	params,
+	depends
+}) => {
 	const session = await getSession();
 
 	if (!session) {
@@ -36,10 +40,7 @@ export const load: LayoutServerLoad = async ({ locals: { supabase, getSession },
 		data: task,
 		error: taskError,
 		status: taskStatus
-	} = await supabase
-		.from('task')
-		.select('id, summary, description, status, due_at, project_id, updated_at')
-		.eq('project_id', id);
+	} = await supabase.from('task').select('*').eq('project_id', id);
 
 	if (taskError) {
 		throw error(taskStatus, taskError.message);

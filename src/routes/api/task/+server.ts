@@ -12,6 +12,7 @@ const taskUpdateSchema = z.object({
 	status: z.enum(['todo', 'progress', 'done']).optional()
 });
 
+// noinspection JSUnusedGlobalSymbols
 export const PUT: RequestHandler = async ({ request, locals: { getSession, supabase } }) => {
 	const session = await getSession();
 

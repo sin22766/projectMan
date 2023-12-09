@@ -1,8 +1,7 @@
 <script lang="ts">
-	import documentPlus from '@iconify/icons-heroicons/document-plus';
-	import Icon from '@iconify/svelte';
+	import { FilePlus } from 'lucide-svelte';
 
-	import { DropdownSelect } from '$lib/components/UI';
+	import { DropdownSelect } from '$lib/components/ui';
 	import { getRelativeTimeString } from '$lib/utils/date';
 
 	import { goto } from '$app/navigation';
@@ -89,7 +88,7 @@
 			class="flex items-center justify-center gap-2 rounded-md bg-amber-300 px-4 py-0.5"
 		>
 			<span class="text-xl font-bold">New</span>
-			<Icon icon={documentPlus} width="24" height="24" />
+			<FilePlus class="h-6 w-6" />
 		</a>
 	</div>
 	<div class="flex flex-col divide-y divide-amber-700 border-y border-amber-700">

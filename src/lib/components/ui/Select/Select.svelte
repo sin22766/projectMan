@@ -1,7 +1,6 @@
 <script lang="ts">
-	import chevronDown from '@iconify/icons-heroicons/chevron-down';
-	import Icon from '@iconify/svelte';
 	import { createSelect, melt } from '@melt-ui/svelte';
+	import { ChevronDown } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { twJoin, twMerge } from 'tailwind-merge';
@@ -47,11 +46,8 @@
 <div class="flex flex-col gap-1">
 	<button class={twMerge(baseStyles, $$props.class)} aria-label="Task Status" use:melt={$trigger}>
 		<span>{$selectedLabel ? $selectedLabel : 'No option'}</span>
-		<Icon
-			class={twJoin('transition-transform', $open ? 'rotate-180' : 'rotate-0')}
-			icon={chevronDown}
-			width="20"
-			height="20"
+		<ChevronDown
+			class={twJoin('h-5 w-5 transition-transform', $open ? 'rotate-180' : 'rotate-0')}
 		/>
 	</button>
 	{#if $open}

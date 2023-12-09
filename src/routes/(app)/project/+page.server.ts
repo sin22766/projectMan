@@ -1,6 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
 
-import type {  Views } from '$lib/server/schema';
+import type { Views } from '$lib/server/database/schema';
 
 import type { PageServerLoad } from './$types';
 

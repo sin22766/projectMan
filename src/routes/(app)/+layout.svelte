@@ -2,7 +2,7 @@
 	import { melt } from '@melt-ui/svelte';
 	import { twJoin } from 'tailwind-merge';
 
-	import { Dropdown, Logo } from '$lib/components/UI';
+	import { Dropdown, Logo } from '$lib/components/ui';
 
 	export let data;
 

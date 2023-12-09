@@ -1,8 +1,5 @@
 <script lang="ts">
-	import calendarIcon from '@iconify/icons-heroicons/calendar';
-	import tableCells from '@iconify/icons-heroicons/table-cells';
-	import viewColumns from '@iconify/icons-heroicons/view-columns';
-	import Icon from '@iconify/svelte';
+	import { Calendar, KanbanSquare, Table } from 'lucide-svelte';
 
 	import type { LayoutServerData } from './$types';
 
@@ -17,23 +14,24 @@
 			href={`/project/${data.project.id}/task`}
 			class="flex items-center gap-2 py-1 hover:bg-amber-200"
 		>
-			<Icon icon={tableCells} width="24px" height="24px" />
+			<Table class="h-6 w-6" />
 			<span>Task</span>
 		</a>
 		<a
 			href={`/project/${data.project.id}/board`}
 			class="flex items-center gap-2 py-1 hover:bg-amber-200"
 		>
-			<Icon icon={viewColumns} width="24px" height="24px" />
+			<KanbanSquare class="h-6 w-6" />
 			<span>Board</span>
 		</a>
 		<a
 			href={`/project/${data.project.id}/timeline`}
 			class="flex items-center gap-2 py-1 hover:bg-amber-200"
 		>
-			<Icon icon={calendarIcon} width="24px" height="24px" />
+			<Calendar class="h-6 w-6" />
 			<span>Timeline</span>
 		</a>
 	</div>
 	<slot />
 </div>
+<dialog></dialog>
