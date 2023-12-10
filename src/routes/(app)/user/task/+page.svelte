@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
 
@@ -67,20 +67,20 @@
 	<title>Your Tasks</title>
 </svelte:head>
 
-<div class='flex flex-col gap-2 px-8 py-8 md:px-16 lg:px-64'>
+<div class="flex flex-col gap-2 px-8 py-8 md:px-16 lg:px-64">
 	<h1 class="text-2xl font-bold">Your Tasks</h1>
-	<div class='flex flex-wrap gap-4 py-2'>
+	<div class="flex flex-wrap gap-4 py-2">
 		<input
-			class='h-8 grow rounded-md border border-amber-600 bg-amber-100 p-1 placeholder-amber-600 outline-amber-800'
-			name='search'
-			type='text'
+			class="h-8 grow rounded-md border border-amber-600 bg-amber-100 p-1 placeholder-amber-600 outline-amber-800"
+			name="search"
+			type="text"
 			required
-			placeholder='Find a task...'
-			autocomplete='off'
+			placeholder="Find a task..."
+			autocomplete="off"
 			bind:value={searchBy}
 			on:change={searchHandler}
 		/>
-		<div class='flex gap-2'>
+		<div class="flex gap-2">
 			<DropdownSelect
 				options={sortOptions}
 				defaultOption={sortOptions.find((i) => i.value === sortBy)}
@@ -90,35 +90,35 @@
 			</DropdownSelect>
 		</div>
 	</div>
-	<div class='flex flex-col divide-y divide-amber-700 rounded-md border border-amber-700'>
-		{#each tasks as task (task.id)}
+	<div class="flex flex-col divide-y divide-amber-700 rounded-md border border-amber-700">
+		{#each tasks as task (`${task.project_id}|${task.id}`)}
 			<div
 				animate:flip={{ delay: 250, duration: 250, easing: quintOut }}
-				class='flex min-h-[48px] justify-between px-2 py-1.5'
+				class="flex min-h-[48px] justify-between px-2 py-1.5"
 			>
-				<div class='flex items-center gap-2 text-xl'>
-					<span class='min-w-[36px] font-light text-amber-500'>#{task.id}</span>
-					<span class='font-medium'>{task.summary}</span>
+				<div class="flex items-center gap-2 text-xl">
+					<span class="text-sm font-light">({task.project?.name})</span>
+					<span class="font-medium">{task.summary}</span>
 				</div>
-				<div class='flex items-center gap-2'>
-					<span class='font-medium'>{task.project?.name}</span>
-					<span class='text-sm font-light min-w-[80px] text-end'>
+				<div class="flex items-center gap-2">
+					<span class="min-w-[80px] text-end text-sm font-light">
 						{#if task.due_at}
 							{getRelativeTimeString(new Date(task.due_at))}
 						{:else}
 							No due date
 						{/if}
 					</span>
-					<div class='flex w-24 justify-between gap-0.5 rounded-md border border-amber-700 px-1.5 py-0.5 text-sm font-medium transition-colors'>
+					<div
+						class="flex w-24 justify-between gap-0.5 rounded-md border border-amber-700 px-1.5 py-0.5 text-sm font-medium transition-colors"
+					>
 						{statusOptions.find((i) => i.value === task.status)?.label}
 					</div>
 				</div>
 			</div>
 		{:else}
-			<div class='flex items-center h-12 px-2 py-1.5'>
+			<div class="flex items-center h-12 px-2 py-1.5">
 				<p>No task</p>
 			</div>
 		{/each}
 	</div>
 </div>
-

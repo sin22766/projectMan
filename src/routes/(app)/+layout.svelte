@@ -27,7 +27,9 @@
 	};
 </script>
 
-<div class="sticky top-0 flex justify-between items-center px-4 py-2 text-xl font-light bg-amber-50/80 backdrop-blur-lg">
+<div
+	class="sticky top-0 flex items-center justify-between bg-amber-50/80 px-4 py-2 text-xl font-light backdrop-blur-lg"
+>
 	<div class="flex w-full items-center">
 		<a href="/">
 			<Logo />

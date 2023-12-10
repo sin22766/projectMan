@@ -19,8 +19,6 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession } })
 		throw error(taskStatus, taskError.message);
 	}
 
-	console.log(task);
-
 	return {
 		tasks: task
 	};
