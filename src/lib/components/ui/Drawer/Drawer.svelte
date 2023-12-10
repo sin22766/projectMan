@@ -31,12 +31,12 @@
 	{#if $open}
 		<div
 			use:melt={$overlay}
-			class="fixed inset-0 z-50 bg-black/50"
+			class="fixed inset-0 z-40 bg-black/50"
 			transition:fade={{ duration: 150 }}
 		/>
 		<div
 			use:melt={$content}
-			class="fixed right-0 top-0 z-50 h-screen w-full max-w-[640px] bg-white p-8
+			class="fixed right-0 top-0 z-40 h-screen w-full max-w-[640px] bg-white p-8
             shadow-lg focus:outline-none"
 			transition:fly={{
 				x: 640,
