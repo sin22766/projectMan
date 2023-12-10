@@ -15,7 +15,7 @@
 		open: open
 	});
 
-	const baseStyles = 'flex items-center justify-center gap-2 rounded-md bg-amber-300 px-4 py-0.5';
+	const baseStyles = 'flex h-fit items-center justify-center gap-2 rounded-md bg-amber-300 px-4 py-0.5';
 </script>
 
 {#if !manualTrigger}

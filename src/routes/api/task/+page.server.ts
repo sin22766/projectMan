@@ -62,5 +62,28 @@ export const actions: Actions = {
 		}
 
 		return { form };
+	},
+	deleteTask: async ({ request, locals: { supabase, getSession } }) => {
+		const session = await getSession();
+
+		if (!session) {
+			throw redirect(303, '/auth/login');
+		}
+
+		const form = await request.formData();
+		const project_id = form.get('project_id') as string satisfies string;
+		const id = form.get('id') as string satisfies string;
+
+		const { error, status } = await supabase
+			.from('task')
+			.delete()
+			.eq('id', id)
+			.eq('project_id', project_id);
+
+		if (error) {
+			return fail(status, { error: error });
+		}
+
+		return { error: null };
 	}
 };

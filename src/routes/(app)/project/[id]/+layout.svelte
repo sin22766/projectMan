@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Calendar, KanbanSquare, Table } from 'lucide-svelte';
+	import { KanbanSquare, Table } from 'lucide-svelte';
 
 	import type { LayoutServerData } from './$types';
 
@@ -23,13 +23,6 @@
 		>
 			<KanbanSquare class="h-6 w-6" />
 			<span>Board</span>
-		</a>
-		<a
-			href={`/project/${data.project.id}/timeline`}
-			class="flex items-center gap-2 py-1 hover:bg-amber-200"
-		>
-			<Calendar class="h-6 w-6" />
-			<span>Timeline</span>
 		</a>
 	</div>
 	<slot />
