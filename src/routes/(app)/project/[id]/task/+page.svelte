@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { error } from '@sveltejs/kit';
 	import { flip } from 'svelte/animate';
 	import { quintOut } from 'svelte/easing';
@@ -95,19 +95,19 @@
 	<title>Task</title>
 </svelte:head>
 
-<div class='flex w-full flex-col gap-2 px-8 py-2 md:px-16 lg:px-24'>
-	<div class='flex flex-wrap gap-4 py-2'>
+<div class="flex w-full flex-col gap-2 px-8 py-2 md:px-16 lg:px-24">
+	<div class="flex flex-wrap gap-4 py-2">
 		<input
-			class='h-8 grow rounded-md border border-amber-600 bg-amber-100 p-1 placeholder-amber-600 outline-amber-800'
-			name='search'
-			type='text'
+			class="h-8 grow rounded-md border border-amber-600 bg-amber-100 p-1 placeholder-amber-600 outline-amber-800"
+			name="search"
+			type="text"
 			required
-			placeholder='Find a task...'
-			autocomplete='off'
+			placeholder="Find a task..."
+			autocomplete="off"
 			bind:value={searchBy}
 			on:change={searchHandler}
 		/>
-		<div class='flex gap-2'>
+		<div class="flex gap-2">
 			<DropdownSelect
 				options={sortOptions}
 				defaultOption={sortOptions.find((i) => i.value === sortBy)}
@@ -118,20 +118,24 @@
 		</div>
 		<DialogNew open={taskNewOpen} formData={data.newTaskForm} projectId={data.project.id} />
 	</div>
-	<div class='flex flex-col divide-y divide-amber-700 rounded-md border border-amber-700'>
+	<div class="flex flex-col divide-y divide-amber-700 rounded-md border border-amber-700">
 		{#each tasks as task (task.id)}
 			<div
 				animate:flip={{ delay: 250, duration: 250, easing: quintOut }}
-				class='flex min-h-[48px] justify-between px-2 py-1.5'
+				class="flex min-h-[48px] justify-between px-2 py-1.5"
 			>
-				<div class='flex items-center gap-2 text-xl'>
-					<span class='min-w-[36px] font-light text-amber-500'>#{task.id}</span>
-					<button type='button' on:click={() => drawerComponent.taskEditHandler(task)} class='font-medium'>
+				<div class="flex items-center gap-2 text-xl">
+					<span class="min-w-[36px] font-light text-amber-500">#{task.id}</span>
+					<button
+						type="button"
+						on:click={() => drawerComponent.taskEditHandler(task)}
+						class="font-medium"
+					>
 						{task.summary}
 					</button>
 				</div>
-				<div class='flex items-center gap-2'>
-					<span class='text-sm font-light'>
+				<div class="flex items-center gap-2">
+					<span class="text-sm font-light">
 						{#if task.due_at}
 							{getRelativeTimeString(new Date(task.due_at))}
 						{:else}
@@ -146,10 +150,15 @@
 				</div>
 			</div>
 		{:else}
-			<div class='flex items-center h-12 px-2 py-1.5'>
+			<div class="flex items-center h-12 px-2 py-1.5">
 				<p>No task</p>
 			</div>
 		{/each}
 	</div>
 </div>
-<DrawerEdit bind:this={drawerComponent} open={taskEditOpen} formData={data.editTaskForm} projectId={data.project.id} />
+<DrawerEdit
+	bind:this={drawerComponent}
+	open={taskEditOpen}
+	formData={data.editTaskForm}
+	projectId={data.project.id}
+/>

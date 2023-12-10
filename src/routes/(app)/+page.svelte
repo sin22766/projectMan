@@ -2,7 +2,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="pt-20 flex flex-col items-center gap-10 h-[calc(100dvh-56px)]">
+<div class="flex h-[calc(100dvh-56px)] flex-col items-center gap-10 pt-20">
 	<h1 class="text-center text-7xl font-semibold text-amber-800">
 		An excellent Helper for <br />
 		your Project and lifestyle
